@@ -1,0 +1,99 @@
+﻿@page "/Articles"
+@using HTTPClient.ClientInterfaces
+@inject IForumService ForumService
+@using global::Shared.Models
+
+
+<h3>Articles</h3>
+
+<div class="page">
+<p class="para">
+    Filter by id: <input class="filter" type ="number" @oninput="@((arg ) => FilterById_(arg))" />
+    Filter by title: <input class="filter" type ="text" @oninput="@((arg ) => FilterByTitle_(arg))" />
+</p>
+<p>
+        <button type="button" @onclick="ExecuteFilter">Filter</button>
+    </p>
+
+@if (forums== null)
+    {
+        <p>
+            <em>Loading..</em>
+        </p>
+    } else if (!forums.Any())
+    {
+        <p>
+            <em>No Article found.</em>
+        </p>
+    }
+    else
+    {
+        <div class="posts-container">
+            @foreach (Forum forum in forums)
+            {
+                <div class="posting">
+                    <h3> <b> @forum.Title </b></h3>
+                    <br>
+                    <div> By @forum.Owner </div>
+                    <br>
+                    <div> @forum.ArticleContent </div>
+                    <br>
+                    /div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private IEnumerable<Forum>? forums;
+    private string msg = "";
+    
+    int? FilterById = null;
+    string? FilterByTitle = null;
+    
+    private void FilterById_(ChangeEventArgs changeEventArgs)
+    {
+        
+        try
+        {
+            FilterById = int.Parse(changeEventArgs.Value.ToString());
+        }
+        catch (Exception e)
+        {}
+        
+    }
+    private void FilterByTitle_(ChangeEventArgs changeEventArgs)
+    {
+        
+        try
+        {
+            FilterByTitle = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {}
+        
+    }
+    private async Task ExecuteFilter()
+    {
+        forums = await ForumService.GetArticles();
+
+    }
+    
+    
+    protected override async Task OnInitializedAsync()
+    {
+        msg = "";
+        try
+        {
+            forums = await ForumService.GetArticles();
+            int stpher = 0;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+    
+}

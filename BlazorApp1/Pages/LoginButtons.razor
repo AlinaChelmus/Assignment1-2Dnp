@@ -1,0 +1,30 @@
+﻿@inject NavigationManager NavigationManager
+
+@page "/LoginButtons"
+@using BlazorApp1.Auth
+
+
+<h3>LoginButtons</h3>
+
+<AuthorizeView>
+    <Authorized>
+        <img class="icon" src="img/Logout.png" @onclick="Logout"/>
+    </Authorized>
+    <NotAuthorized>
+        <img class="icon" src="img/Login.png" @onclick="Login"/>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    private void Login()
+    {
+        NavigationManager.NavigateTo("/Login");
+    }
+
+    private async Task Logout()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+}

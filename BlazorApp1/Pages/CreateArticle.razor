@@ -1,0 +1,50 @@
+﻿@page "/CreateArticle"
+@using global::Shared.DTO
+@using HTTPClient.ClientInterfaces
+@inject IForumService ForumService
+@inject NavigationManager NavigationManager
+
+<div class="card">
+
+<h3>CreateArticle</h3>
+
+ <div class="form-group field">
+        <label>Title:</label>
+        <input type="text" @bind="title"/>
+    </div>
+<div class="form-group field">
+    <label>Description:</label>
+    <p></p>
+    <input type="text" @bind="articleContent"/>
+</div>
+<p class="actions">
+    <button @onclick="Create" class="submit">Create</button>
+</p>
+</div>
+
+@code {
+
+    private string title = "";
+    private string articleContent = "";
+    private string msg = "";
+    private int? selectedUserId;
+
+    private async Task Create()
+    {
+        msg = "";
+       
+        try
+        {
+            ForumCreationDTO dto = new((int)selectedUserId, title, articleContent);
+            await ForumService.CreateAsync(dto);
+            NavigationManager.NavigateTo("/Articles");
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+
+}

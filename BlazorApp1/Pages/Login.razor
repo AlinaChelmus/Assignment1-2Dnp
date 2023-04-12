@@ -1,0 +1,78 @@
+﻿@page "/Login"
+@using Microsoft.AspNetCore.Components.Authorization
+@using BlazorApp.Auth
+@using BlazorApp1.Auth
+@inject IAuthManager AuthImpl
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+        <div class="card">
+            <h3>Please login</h3>
+            <div class="field">
+                <label>User name:</label>
+                <input type="text" @bind="userName"/>
+            </div>
+            <div class="field">
+                <label style="text-align: center">Password:</label>
+                <input type="password" @bind="Password"/>
+            </div>
+            @if (!string.IsNullOrEmpty(errorLabel))
+            {
+                <div class="field">
+                    <label style="color: red">
+                        @errorLabel
+                    </label>
+                </div>
+            }
+            <div class="field">
+                <button class="loginbtn" @onclick="LoginAsync">Log in</button>
+            </div>
+        </div>
+   
+                <div class="box">
+                    <h3>Logout</h3>
+                    <input type="submit" name="" value="LogoutAsync" @onclick="LogoutAsync">
+                </div>
+
+   
+
+@code {
+    private string userName;
+    private string Password;
+    private string errorLabel;
+
+    private async Task LoginAsync()
+    {
+        errorLabel = "";
+        try
+        {
+            await AuthImpl.LoginAsync(userName, Password);
+            userName = "";
+            Password = "";
+            NavigationManager.NavigateTo("/Articles");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            errorLabel = $"Error: {e.Message}";
+        }
+    }
+    
+    public async Task LogoutAsync()
+    {
+        errorLabel = "";
+        userName = "";
+        Password = "";
+        try
+        {
+            
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+         
+        }
+    }
+
+}
