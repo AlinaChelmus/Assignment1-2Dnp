@@ -12,7 +12,7 @@ namespace BlazorApp1.Auth;
 
 public class AuthImpl: IAuthManager
 {
-   // private readonly HttpClient client = new ();
+    private readonly HttpClient client = new ();
    
     public Action<ClaimsPrincipal> OnAuthStateChanged { get; set; } = null!; // assigning to null! to suppress null warning.
     private readonly IUserService userService;
@@ -24,11 +24,11 @@ public class AuthImpl: IAuthManager
         this.jsRuntime = jsRuntime;
     }
     
-    public async Task LoginAsync(string username, string password)
+    public async Task LoginAsync(string userName, string Password)
     {
-        User? user = userService.ValidateUser(username, password); 
+        User? user = userService.ValidateUser(userName, Password); 
 
-        ValidateLoginCredentials(password, user); // Validate input data against data from database
+        ValidateLoginCredentials(Password, user); // Validate input data against data from database
         // validation success
         await CacheUserAsync(user!); // Cache the user object in the browser 
 
@@ -61,14 +61,14 @@ public class AuthImpl: IAuthManager
         return user;
     }
 
-    private static void ValidateLoginCredentials(string password, User? user)
+    private static void ValidateLoginCredentials(string Password, User? user)
     {
         if (user == null)
         {
             throw new Exception("Username not found");
         }
 
-        if (!string.Equals(password,user.Password))
+        if (!string.Equals(Password,user.Password))
         {
             throw new Exception("Password incorrect");
         }

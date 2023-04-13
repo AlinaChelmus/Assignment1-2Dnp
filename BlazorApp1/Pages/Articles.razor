@@ -11,11 +11,12 @@
     Filter by id: <input class="filter" type ="number" @oninput="@((arg ) => FilterById_(arg))" />
     Filter by title: <input class="filter" type ="text" @oninput="@((arg ) => FilterByTitle_(arg))" />
 </p>
-<p>
+    <p>
         <button type="button" @onclick="ExecuteFilter">Filter</button>
     </p>
-
-@if (forums== null)
+    
+   
+    @if (forums== null)
     {
         <p>
             <em>Loading..</em>
@@ -43,14 +44,34 @@
             }
         </div>
     }
+    <ul>
+        
+        <h3>Read also:</h3>
+        <li>
+            <a href="https://www.reddit.com/r/AskReddit/comments/12jnimp/what_made_you_realize_youre_old/">
+                <em>What made you realize that...?</em>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.reddit.com/r/science/comments/12egof3/girls_are_quitting_sports_at_a_high_rate_due_to/">
+                <em>Sport</em>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.reddit.com/r/aww/comments/11tqh0r/keanu_reeves_is_the_puppy_king/">
+                <em>Celebrity</em>
+            </a>
+        </li>
+    </ul>
+
 </div>
 
 @code {
     private IEnumerable<Forum>? forums;
     private string msg = "";
-    
-    int? FilterById = null;
-    string? FilterByTitle = null;
+
+    int? FilterById;
+    string? FilterByTitle;
     
     private void FilterById_(ChangeEventArgs changeEventArgs)
     {

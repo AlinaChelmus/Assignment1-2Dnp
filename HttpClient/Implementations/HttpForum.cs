@@ -25,12 +25,12 @@ public class HttpForum: IForumService
         }
     }
 
-    public async Task<IEnumerable<Forum>?> GetArticles(string? articleTitleContains = null)
+    public async Task<IEnumerable<Forum>?> GetArticles(string? articleContent= null)
     {
         string uri = "/forum";
-        if (!string.IsNullOrEmpty(articleTitleContains))
+        if (!string.IsNullOrEmpty(articleContent))
         {
-            uri += $"?tital={articleTitleContains}";
+            uri += $"?tital={articleContent}";
         }
 
         HttpResponseMessage response = await client.GetAsync(uri);

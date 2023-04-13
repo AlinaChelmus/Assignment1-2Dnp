@@ -2,6 +2,7 @@
 @using HTTPClient.ClientInterfaces
 @using global::Shared.DTO
 @inject IUserService UserService
+@inject NavigationManager NavigationManager
 
 <div class="card">
 <h3>Create User</h3>
@@ -17,7 +18,7 @@
         <input type="text" @bind="Password" @bind:event="oninput"/>
     </div>
     <div class="button-row">
-        <button @onclick="Create" disabled="@(string.IsNullOrEmpty(userName))" class="createbtn">Create</button>
+        <button @onclick="Create" disabled="@(string.IsNullOrEmpty(userName))" class="Createbtn">Create</button>
     </div>
 </div>
 
@@ -45,5 +46,7 @@
             color = "red";
         }
     }
+    
+    
     
 }
