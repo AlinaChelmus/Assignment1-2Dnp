@@ -9,7 +9,7 @@ namespace HTTPClient.Implementations;
 public class HttpForum: IForumService
 {
     private readonly HttpClient client;
-
+    private string uri = "http://localhost:5039";
     public HttpForum(HttpClient client)
     {
         this.client = client;

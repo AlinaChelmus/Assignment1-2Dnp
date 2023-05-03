@@ -26,7 +26,7 @@ public class AuthImpl: IAuthManager
     
     public async Task LoginAsync(string userName, string Password)
     {
-        User? user = userService.ValidateUser(userName, Password); 
+        User? user = await userService.ValidateUser(userName, Password); 
 
         ValidateLoginCredentials(Password, user); // Validate input data against data from database
         // validation success
