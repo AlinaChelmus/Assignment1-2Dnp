@@ -1,13 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
-using FileData;
+﻿
+using Application.DaoInterfaces;
 using Shared.Models;
 
 namespace WebAPI.Services;
 
 public class AuthenService: IAuthenService
 {
-    
+    private IUserDao _userDao;
+
+    public AuthenService(IUserDao userDao)
+    {
+        _userDao = userDao;
+    }
+    /*
     private const string filepath = "data.json";
     private DataContainer? dataContainer;
     
@@ -63,40 +68,22 @@ public class AuthenService: IAuthenService
             Role = "user",
             UserName = "sorina"
         }
-    };
+    };*/
 
-    Task<User> IAuthenService.ValidateUser(string userName, string Password)
+    public async Task<User> ValidateUser(string userName, string Password)
     {
-        User? existinguser = _Users.FirstOrDefault(u =>
-            u.UserName.Equals(userName, StringComparison.OrdinalIgnoreCase));
-        
-        if (existinguser == null)
+        User? exist = await _userDao.GetByUsernameAsync(userName);
+       
+        if (exist == null)
         {
             throw new Exception("User not found");
         }
 
-        if (!existinguser.Password.Equals(Password))
+        if (!exist.Password.Equals(Password))
         {
             throw new Exception("Password mismatch");
         }
 
-        return Task.FromResult(existinguser);
+        return await Task.FromResult(exist);
     }
-
-    public Task RegisterUser(User user)
-    {
-        if (string.IsNullOrEmpty(user.UserName))
-        {
-            throw new ValidationException("Username cannot be null");
-        }
-
-        if (string.IsNullOrEmpty(user.Password))
-        {
-            throw new ValidationException("Password cannot be null");
-        }
-        
-        users.Add(user);
-
-        return Task.CompletedTask;
     }
-}
